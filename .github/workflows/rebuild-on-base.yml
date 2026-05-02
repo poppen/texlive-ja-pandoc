@@ -1,0 +1,36 @@
+name: rebuild-on-base
+
+on:
+  schedule:
+    # 毎日 03:17 UTC（JST 12:17）
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      needs-updating: ${{ steps.check.outputs.needs-updating }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check if base image was updated
+        id: check
+        uses: lucacome/docker-image-update-checker@v2
+        with:
+          base-image: docker.io/paperist/texlive-ja:latest
+          image: ghcr.io/${{ github.repository_owner }}/texlive-ja-pandoc:latest
+          platforms: linux/amd64,linux/arm64
+
+  rebuild:
+    needs: check
+    if: needs.check.outputs.needs-updating == 'true'
+    uses: ./.github/workflows/build.yml
+    permissions:
+      contents: read
+      packages: write
