@@ -17,11 +17,11 @@ jobs:
       needs-updating: ${{ steps.check.outputs.needs-updating }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check if base image was updated
         id: check
-        uses: lucacome/docker-image-update-checker@v2
+        uses: lucacome/docker-image-update-checker@v3
         with:
           base-image: docker.io/paperist/texlive-ja:latest
           image: ghcr.io/${{ github.repository_owner }}/texlive-ja-pandoc:latest
