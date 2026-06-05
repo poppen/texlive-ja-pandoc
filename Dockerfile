@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 FROM paperist/texlive-ja:latest
 
-ARG PANDOC_VERSION=3.9.0.2
+ARG PANDOC_VERSION=3.10
 ARG TARGETARCH
 
 LABEL org.opencontainers.image.source="https://github.com/poppen/texlive-ja-pandoc" \
